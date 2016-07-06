@@ -25,8 +25,6 @@ public class Vehicle : MonoBehaviour
     void Start()
     {
         thisGO = transform.gameObject;
-        
-       
     }
 
     public void PostInitStuff()

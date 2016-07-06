@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     // Move character, control OnHit, ...
 
-        // Left click - set and move duck to waypoint
-        // Right click - call ducklings/ play sound and small anim 
-        
+    // Left click - set and move duck to waypoint
+    // Right click - call ducklings/ play sound and small anim 
+
     Vector3 currWaypoint;
-    Projector duckCallProjector;
-   public GameObject moveToProj;
+    GameObject duckCallProjector;
+    public GameObject moveToProj;
 
     void Start()
     {
-        duckCallProjector = transform.FindChild("ducklingCall_proj").GetComponent<Projector>();
+        duckCallProjector = transform.FindChild("ducklingCall_proj").gameObject;
     }
 
     void Update()
@@ -32,25 +33,25 @@ public class PlayerController : MonoBehaviour {
         }
         else if (Input.GetMouseButtonDown(1))
         {
-
+            duckCallProjector.GetComponent<Projector>().enabled = true;
         }
 
         if (currWaypoint != null)
         {
-            MoveToWP();  
+            MoveToWP();
         }
     }
 
     void MoveToWP()
     {
-        transform.position = Vector3.MoveTowards(transform.position, currWaypoint, .5f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, currWaypoint, 5f * Time.deltaTime);
         //transform.LookAt(currWaypoint);
         Vector3 temp = transform.position;
         temp.y = 0.696f;
         transform.position = temp;
     }
 
-   
+
 
 
 }

@@ -5,5 +5,6 @@ public class PlayerData {
 
     public int ducklingCnt;
     public float pSpeed;
-
+    public GameObject pGO;
+   
 }

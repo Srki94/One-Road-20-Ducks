@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+ 
 
 public class GameManager : MonoBehaviour
 {
-
+     
     // Track player data (ducklings, state, ...)
     
     // Note : Weather -> boost player, bonuses etc.
@@ -16,24 +17,34 @@ public class GameManager : MonoBehaviour
     public GameObject ducklingPrefab;
 
     List<GameObject> roadSegmentsInScene = new List<GameObject>();      //Note : Caching - As long as player sees road on scene keep it alive ? 
+   
+    //GameObject Player;
+    PlayerData Player = new PlayerData();
 
-    GameObject Player;          
-    Transform lastRoadPos;      
+    Transform lastRoadPos;
 
     int ducklingsCnt = 0;       // Alive ducklings on scene
     int diffLevel = 0;          // Determines amount of cars, type of roads, speed etc.
+    Vector3 ducklingSpawnOffset = new Vector3(-1f, 0.5f, 1);
 
     void Start()
     {
+        if (!ducklingPrefab)
+        {
+            Debug.LogError("Warning >> : Duckling prefab not set to Game Manager");
+        }
         // Firt init, spawn player, spawn roads, set data
         // Empty scene -> Player, GameManager (static) -> spawn roads 
-        Player = GameObject.FindWithTag("Player");
-        SpawnRoadSegment();
+        Player.pGO = GameObject.FindWithTag("Player");
+        SpawnRoadSegment(true);
     }
 
     void SpawnDuckling()
     { // spawn outside of player's view ? Go to mom running :o 
-         
+        GameObject thisDuckling = Instantiate(ducklingPrefab, Player.pGO.transform.position + ducklingSpawnOffset, Quaternion.identity) as GameObject;
+        thisDuckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(thisDuckling);
+        ducklingsCnt++;
+        thisDuckling.GetComponent<DucklingAI>().moving = true;
     }
 
     void SpawnRoadSegment(bool rnd = false)
@@ -64,6 +75,7 @@ public class GameManager : MonoBehaviour
 
         SpawnCars(thisRoad);
         roadSegmentsInScene.Add(thisRoad);
+        SpawnDuckling();
     }
 
     void SpawnCars(GameObject road, bool rnd = false)

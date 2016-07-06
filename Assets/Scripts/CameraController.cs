@@ -3,14 +3,27 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-    Quaternion rot;
+    public GameObject followTarget;
+
+    Vector3 camPosBase;
+
     void Start()
     {
-       rot = transform.rotation;
-    }
+        if (!followTarget)
+        {
+            followTarget = GameObject.FindWithTag("Player");
+        }
+
+        camPosBase = transform.position;
+    } 
+
     void Update()
     {
-      //  transform.rotation = rot;
+        // offset ?
+       // transform.position = new Vector3(followTarget.transform.position.x, camPosBase.y, followTarget.transform.position.z);
+       
+       // transform.position = followTarget.transform.position;
+       // transform.LookAt(followTarget.transform);
     }
-	 
+
 }

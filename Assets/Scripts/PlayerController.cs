@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     // Left click - set and move duck to waypoint
     // Right click - call ducklings/ play sound and small anim 
 
-    Vector3 currWaypoint;
+    Vector3 currWaypoint = Vector3.zero;
     GameObject duckCallProjector;
     public GameObject moveToProj;
 
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
             duckCallProjector.GetComponent<Projector>().enabled = true;
         }
 
-        if (currWaypoint != null)
+        if (currWaypoint != Vector3.zero)
         {
             MoveToWP();
         }

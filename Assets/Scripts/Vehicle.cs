@@ -27,6 +27,9 @@ public class Vehicle : MonoBehaviour
         thisGO = transform.gameObject;
     }
 
+    /// <summary>
+    /// Spawns car on predefined lane and sets that lane as activeRoa for this car. 
+    /// </summary>
     public void PostInitStuff()
     {
         if (activeLane == Lane.Left)
@@ -37,6 +40,7 @@ public class Vehicle : MonoBehaviour
         {
             localLane = activeRoad.rightLaneWP;
         }
+            transform.position = localLane[0].position;
     }
     void Update()
     {

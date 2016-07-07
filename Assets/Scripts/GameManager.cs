@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     //GameObject Player;
     PlayerData Player = new PlayerData();
 
-    Transform lastRoadPos;
+    Vector3 lastRoadPos;
 
     int ducklingsCnt = 0;       // Alive ducklings on scene
     int diffLevel = 0;          // Determines amount of cars, type of roads, speed etc.
@@ -67,11 +67,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            spawnPos = lastRoadPos.position + new Vector3(0, 0, 3.66f);
+            spawnPos = lastRoadPos + new Vector3(0, 0, roadSegmentPrefabs[index].GetComponent<Renderer>().bounds.size.z);
         }
 
         GameObject thisRoad = (GameObject)Instantiate(roadSegmentPrefabs[index], spawnPos, Quaternion.identity);
-        lastRoadPos = thisRoad.transform;
+        lastRoadPos = thisRoad.transform.position;
+         
 
         SpawnCars(thisRoad);
         roadSegmentsInScene.Add(thisRoad);
@@ -93,7 +94,6 @@ public class GameManager : MonoBehaviour
 
         GameObject instantiatedCar = (GameObject)Instantiate(vehiclePrefabs[index], Vector3.zero, Quaternion.identity);
         instantiatedCar.GetComponent<Vehicle>().activeRoad = road.GetComponent<RoadSegment>();
-        instantiatedCar.GetComponent<Vehicle>().PostInitStuff();
 
         int chancyChance = Random.Range(0, 100);
 
@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
             instantiatedCar.GetComponent<Vehicle>().activeLane = Vehicle.Lane.Right;
         }
 
+        instantiatedCar.GetComponent<Vehicle>().PostInitStuff();
         RoadSegment rs = road.GetComponent<RoadSegment>();
         rs.carsOnThisRoad.Add(instantiatedCar);
         rs.carsOnThisRoad[rs.carsOnThisRoad.Count - 1].GetComponent<Vehicle>().moving = true;

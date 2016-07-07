@@ -29,9 +29,9 @@ public class DucklingAI : MonoBehaviour
         // play FX, remove duckling from landing zone (@mom), remove GO and update GM
         // only car tire can hit ducklings 
 
-        if (col.gameObject.tag == "CarAIWheel")
+        if (col.gameObject.tag == "CarAIWheel" && gameObject.tag == "DucklingAI")
         {
-
+            
         }
     }
 

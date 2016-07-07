@@ -4,8 +4,9 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
     public GameObject followTarget;
+    public float CamFollowSpeed = 10f;
 
-    Vector3 camPosBase;
+    Vector3 camPosBaseOffset;
 
     void Start()
     {
@@ -14,16 +15,23 @@ public class CameraController : MonoBehaviour {
             followTarget = GameObject.FindWithTag("Player");
         }
 
-        camPosBase = transform.position;
+        camPosBaseOffset = transform.position - followTarget.transform.position;
     } 
 
-    void Update()
+    void LateUpdate()
     {
-        // offset ?
-       // transform.position = new Vector3(followTarget.transform.position.x, camPosBase.y, followTarget.transform.position.z);
-       
-       // transform.position = followTarget.transform.position;
-       // transform.LookAt(followTarget.transform);
+        Vector3 cachedPos = followTarget.transform.position + camPosBaseOffset;
+
+        if (transform.position.z > cachedPos.z)
+        {
+            return;
+        }
+        else
+        {
+            cachedPos.y = camPosBaseOffset.y;
+            cachedPos.x = camPosBaseOffset.x;
+            transform.position = Vector3.MoveTowards(transform.position, cachedPos, CamFollowSpeed * Time.deltaTime);
+        }
     }
 
 }

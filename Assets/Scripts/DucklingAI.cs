@@ -42,5 +42,10 @@ public class DucklingAI : MonoBehaviour
         Vector3 temp = transform.position;
         temp.y = 0.196f;
         transform.position = temp;
+
+        Vector3 target = landingDestination.position - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, target, 8f * Time.deltaTime, 0.0f);
+        Debug.DrawRay(transform.position, newDir, Color.cyan);
+        transform.rotation = Quaternion.LookRotation(newDir);
     }
 }

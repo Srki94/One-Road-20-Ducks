@@ -1,44 +1,15 @@
 fileFormatVersion: 2
-guid: d6f1959f825d5534fa616aab05fab0e0
-timeCreated: 1467936208
+guid: 00da868b81e49ef49b7d2c39afd250d5
+timeCreated: 1467936278
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Car
-    100002: CarWheels
-    100004: Duckling
-    100006: DuckMom
-    100008: //RootNode
-    100010: segment_Road0
-    100012: segment_Road0.001
-    400000: Car
-    400002: CarWheels
-    400004: Duckling
-    400006: DuckMom
-    400008: //RootNode
-    400010: segment_Road0
-    400012: segment_Road0.001
-    2300000: Car
-    2300002: CarWheels
-    2300004: Duckling
-    2300006: DuckMom
-    2300008: segment_Road0
-    2300010: segment_Road0.001
-    2300012: //RootNode
-    3300000: Car
-    3300002: CarWheels
-    3300004: Duckling
-    3300006: DuckMom
-    3300008: segment_Road0
-    3300010: segment_Road0.001
-    3300012: //RootNode
-    4300000: segment_Road0.001
-    4300002: CarWheels
-    4300004: Car
-    4300006: segment_Road0
-    4300008: Duckling
-    4300010: DuckMom
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Duckling
   materials:
     importMaterials: 1
     materialName: 0

@@ -40,7 +40,7 @@ public class Vehicle : MonoBehaviour
         {
             localLane = activeRoad.rightLaneWP;
         }
-            transform.position = localLane[0].position;
+        transform.position = localLane[0].position;
     }
     void Update()
     {
@@ -53,18 +53,15 @@ public class Vehicle : MonoBehaviour
 
     void moveToWP()
     {
-
         if (Vector3.Distance(transform.position, localLane[activeWPIndex].position) > 0.5f)
         {
-            //transform.Translate(localLane[activeWPIndex].position - transform.position * Time.deltaTime * stats.vSpeed);
-            transform.position = Vector3.MoveTowards(transform.position, localLane[activeWPIndex].position, stats.vSpeed * Time.deltaTime );
+            transform.position = Vector3.MoveTowards(transform.position, localLane[activeWPIndex].position, stats.vSpeed * Time.deltaTime);
             transform.LookAt(localLane[activeWPIndex].position);
         }
         else
         {
             if (activeWPIndex == localLane.Count - 1)
             {
-                // fade car out 
                 moving = false;
             }
             else
@@ -72,8 +69,6 @@ public class Vehicle : MonoBehaviour
                 activeWPIndex++;
             }
         }
-
-
     }
 
     void ScanRoad()

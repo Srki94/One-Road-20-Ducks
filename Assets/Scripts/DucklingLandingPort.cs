@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public class DucklingLandingPort : MonoBehaviour {
 
     public List<LandingArea> landingAreas = new List<LandingArea>();
-    
+
+    float spawnOffset = 0f;
    
     // *1       *5
     //  *2    *4
@@ -34,9 +35,54 @@ public class DucklingLandingPort : MonoBehaviour {
             landingAreas[3].ducklingsInZone.Add(duckling);
             return landingAreas[3].landingZone;
         }
+        // All predefined positions are filled, get first one that is empty, if none spawn new batch
 
-        return landingAreas[Random.Range(0, landingAreas.Count - 1)].landingZone;
+        var lz = landingAreas.Find(x => x.ducklingsInZone.Count == 0);
+        if (lz != null)
+        {
+            lz.ducklingsInZone.Add(duckling);
+            return lz.landingZone;
+        }
+        else
+        {
+            spawnOffset += 0.5f;
+            SpawnLandingZones(GameManager.Player.pGO.transform, 5,  spawnOffset);
+            lz = landingAreas.Find(x => x.ducklingsInZone.Count == 0);
+            lz.ducklingsInZone.Add(duckling);
+            return lz.landingZone;
+        }
+       // return landingAreas[Random.Range(0, landingAreas.Count - 1)].landingZone;
  
+    }
+    /// <summary>
+    /// Procedurally spawns new landing zones behind player.
+    /// </summary>
+    /// <param name="pGoPos">Position of player</param>
+    /// <param name="ducklingCnt">Count of spots to spawn</param>
+    /// <param name="zOffset">Offset from player</param>
+    public void SpawnLandingZones(Transform pGoPos, int ducklingCnt, float zOffset, bool test = false)
+    {
+        int numPoints = ducklingCnt;
+
+        for (var pointNum =0; pointNum < numPoints; pointNum++)
+        {
+            var i = (pointNum * 1.0) / numPoints;
+            var angle = i * Mathf.PI + 90;
+            
+            var x = Mathf.Sin((float)angle) * .5f;
+            var y = Mathf.Cos((float)angle) * .5f;
+
+            var pos = new Vector3(x, y, 0) + (pGoPos.position - new Vector3(0,0, zOffset));
+
+           GameObject thisGo =  (GameObject)Instantiate(new GameObject(), pos, Quaternion.identity);
+            thisGo.transform.parent = pGoPos.gameObject.transform;
+            landingAreas.Add(new LandingArea(thisGo.transform));
+
+            if (test)
+            {
+                GameObject gameObj = (GameObject)Instantiate(GameObject.CreatePrimitive(PrimitiveType.Capsule), pos, Quaternion.identity);
+            }
+        }
     }
 
 }

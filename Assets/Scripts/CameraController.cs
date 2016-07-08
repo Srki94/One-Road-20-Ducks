@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour {
     {
         if (!followTarget)
         {
+            Debug.LogWarning(@"Follow target not associated with camera. Setting gameObject with tag ""Player"".");
             followTarget = GameObject.FindWithTag("Player");
         }
 

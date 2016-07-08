@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     List<GameObject> roadSegmentsInScene = new List<GameObject>();      //Note : Caching - As long as player sees road on scene keep it alive ? 
    
     //GameObject Player;
-    PlayerData Player = new PlayerData();
+    public static PlayerData Player = new PlayerData();
 
     Vector3 lastRoadPos;
 

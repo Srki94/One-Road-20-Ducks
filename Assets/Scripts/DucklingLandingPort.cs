@@ -63,19 +63,20 @@ public class DucklingLandingPort : MonoBehaviour {
     public void SpawnLandingZones(Transform pGoPos, int ducklingCnt, float zOffset, bool test = false)
     {
         int numPoints = ducklingCnt;
+         
 
-        for (var pointNum =0; pointNum < numPoints; pointNum++)
+        for (var pointNum = 0; pointNum < numPoints; pointNum++)
         {
             var i = (pointNum * 1.0) / numPoints;
             var angle = i * Mathf.PI + 90;
             
             var x = Mathf.Sin((float)angle) * .5f;
-            var y = Mathf.Cos((float)angle) * .5f;
+            var z = Mathf.Cos((float)angle) * 1f;
 
-            var pos = new Vector3(x, y, 0) + (pGoPos.position - new Vector3(0,0, zOffset));
+            var pos = new Vector3(x, 0, z) +  (pGoPos.position- new Vector3(0,0, zOffset));
 
-           GameObject thisGo =  (GameObject)Instantiate(new GameObject(), pos, Quaternion.identity);
-            thisGo.transform.parent = pGoPos.gameObject.transform;
+           GameObject thisGo =  (GameObject)Instantiate(new GameObject("GeneratedLZ"), pos, Quaternion.identity);
+            thisGo.transform.parent = pGoPos;
             landingAreas.Add(new LandingArea(thisGo.transform));
 
             if (test)

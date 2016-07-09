@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetMouseButtonDown(1))
             {
                 duckCallProjector.GetComponent<Projector>().enabled = true;
+                duckCallProjector.GetComponent<Animator>().Play("DuckCallProjectorAnim");
             }
 
             if (currWaypoint != Vector3.zero)
@@ -62,7 +63,6 @@ public class PlayerController : MonoBehaviour
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, direction, 8f * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDir);
-
         }
 
     }

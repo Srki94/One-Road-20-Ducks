@@ -4,9 +4,10 @@ using System.Collections.Generic;
 public class DucklingLandingPort : MonoBehaviour {
 
     public List<LandingArea> landingAreas = new List<LandingArea>();
-
+    
     float spawnOffset = 0f;
-   
+
+    public GameObject emptyGOprefab;
     // *1       *5
     //  *2    *4
     //   * 3    
@@ -75,7 +76,8 @@ public class DucklingLandingPort : MonoBehaviour {
 
             var pos = new Vector3(x, 0, z) +  (pGoPos.position- new Vector3(0,0, zOffset));
 
-           GameObject thisGo =  (GameObject)Instantiate(new GameObject("GeneratedLZ"), pos, Quaternion.identity);
+           GameObject thisGo =  (GameObject)Instantiate(emptyGOprefab, pos, Quaternion.identity);
+            thisGo.name = "GeneratedLZ";
             thisGo.transform.parent = pGoPos;
             landingAreas.Add(new LandingArea(thisGo.transform));
 

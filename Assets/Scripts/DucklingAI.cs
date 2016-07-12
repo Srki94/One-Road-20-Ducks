@@ -11,9 +11,16 @@ public class DucklingAI : MonoBehaviour
     public Transform landingDestination;
     public bool moving = false;
 
+    public Material fxDissolveMat;
+    public Material defaultMat;
+
+    float sliceAmount = 0f;
+    bool dying = false;
+    Renderer thisRend;
+
     void Start()
     {
-
+        thisRend = GetComponent<Renderer>();
     }
 
     void Update()
@@ -22,6 +29,12 @@ public class DucklingAI : MonoBehaviour
         {
             Waddle();
         }
+
+       if (dying)
+       {
+           sliceAmount =  Mathf.Lerp(sliceAmount, 1f, 1f * Time.deltaTime);
+           thisRend.material.SetFloat("_SliceAmount", sliceAmount);
+       }
     }
 
     void OnCollisionEnter(Collision col)
@@ -31,12 +44,27 @@ public class DucklingAI : MonoBehaviour
 
         if (col.gameObject.tag == "CarAIWheel" && gameObject.tag == "DucklingAI")
         {
-            
+            GetComponent<Renderer>().material = fxDissolveMat;
+            dying = true;
+        }
+
+    }
+
+    void OnRenderObject()
+    {
+        if (dying && thisRend.material == fxDissolveMat)
+        {
+            thisRend.sharedMaterial.SetFloat("_SliceAmount", sliceAmount);
         }
     }
 
     void Waddle()
     {
+        if (Vector3.Distance(transform.position, landingDestination.position) < 0.2f)
+        {
+           // _playerAnimator.SetBool("Moving", false);
+            return;
+        }
         transform.position = Vector3.MoveTowards(transform.position, landingDestination.position, speed * Time.deltaTime);
 
         Vector3 temp = transform.position;

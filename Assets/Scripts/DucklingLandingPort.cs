@@ -85,5 +85,17 @@ public class DucklingLandingPort : MonoBehaviour {
             }
         }
     }
+     
+    public void ReSpawnLandingZones(int amount)
+    {
+        spawnOffset = 0.0f;
+        landingAreas.RemoveRange(4, landingAreas.Count - 4);
+
+        for (var i = 0; i <= amount/5; i++)
+        {
+            spawnOffset += 0.5f;
+            SpawnLandingZones(GameManager.Player.pGO.transform, 5, spawnOffset);
+        }
+    }
 
 }

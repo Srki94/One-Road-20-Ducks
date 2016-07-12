@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
- 
+
 
 public class GameManager : MonoBehaviour
 {
-     
+
     // Track player data (ducklings, state, ...)
-    
+
     // Note : Weather -> boost player, bonuses etc.
     // Note : Only wheels can hit ducklings, unlike duckmom
 
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject ducklingPrefab;
 
     List<GameObject> roadSegmentsInScene = new List<GameObject>();      //Note : Caching - As long as player sees road on scene keep it alive ? 
-   
+
     //GameObject Player;
     public static PlayerData Player = new PlayerData();
 
@@ -33,23 +33,37 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Warning >> : Duckling prefab not set to Game Manager");
         }
-        // Firt init, spawn player, spawn roads, set data
-        // Empty scene -> Player, GameManager (static) -> spawn roads 
+
         Player.pGO = GameObject.FindWithTag("Player");
-        SpawnRoadSegment(true);
+
+        for (var i = 0; i <=5; i++)
+        {
+            SpawnRoadSegment(true);
+        }
     }
 
     void SpawnDuckling()
-    { // spawn outside of player's view ? Go to mom running :o 
+    {
         GameObject thisDuckling = Instantiate(ducklingPrefab, Player.pGO.transform.position + ducklingSpawnOffset, Quaternion.identity) as GameObject;
         thisDuckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(thisDuckling);
         ducklingsCnt++;
         thisDuckling.GetComponent<DucklingAI>().moving = true;
     }
 
-    void SpawnRoadSegment(bool rnd = false)
+    public void ResetDucklingFormation()
     {
-        Vector3 spawnPos = Vector3.zero;
+        DucklingLandingPort lp = Player.pGO.GetComponent<DucklingLandingPort>();
+        lp.ReSpawnLandingZones(ducklingsCnt);
+
+        foreach (var duckling in GameObject.FindGameObjectsWithTag("DucklingAI"))
+        {
+            duckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(duckling);
+        }
+    }
+
+    public void SpawnRoadSegment(bool rnd = false, int amount = 1)
+    {
+        Vector3 spawnPos = new Vector3(10, 0, 1);
         int index = 0;
 
         if (rnd)
@@ -60,19 +74,11 @@ public class GameManager : MonoBehaviour
         {
             // figure out index by diff modifier
         }
-
-        if (lastRoadPos == null)
-        {
-            spawnPos = new Vector3(10, 0, 1);
-        }
-        else
-        {
-            spawnPos = lastRoadPos + new Vector3(0, 0, roadSegmentPrefabs[index].GetComponent<Renderer>().bounds.size.z);
-        }
+        spawnPos = lastRoadPos + new Vector3(0, 0, roadSegmentPrefabs[index].GetComponent<Renderer>().bounds.size.z);
 
         GameObject thisRoad = (GameObject)Instantiate(roadSegmentPrefabs[index], spawnPos, Quaternion.identity);
         lastRoadPos = thisRoad.transform.position;
-         
+
 
         SpawnCars(thisRoad);
         roadSegmentsInScene.Add(thisRoad);
@@ -113,7 +119,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-   
+
     void Update()
     {
         if (Input.GetMouseButtonUp(0))

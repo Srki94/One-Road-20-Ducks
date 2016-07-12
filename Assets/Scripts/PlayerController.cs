@@ -16,10 +16,13 @@ public class PlayerController : MonoBehaviour
     GameObject duckCallProjector;
     public GameObject moveToProj;
     CharacterController gamepadCharController;
+    Animator _playerAnimator;
+    GameManager gameMgr;
 
     void Start()
     {
         duckCallProjector = transform.FindChild("ducklingCall_proj").gameObject;
+        _playerAnimator = GetComponent<Animator>();
 
         if (controllerType == ControllerType.Gamepad)
         {
@@ -28,6 +31,8 @@ public class PlayerController : MonoBehaviour
             gamepadCharController.enabled = true;
             
         }
+
+        gameMgr = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
     void Update()
@@ -41,14 +46,19 @@ public class PlayerController : MonoBehaviour
                 if (Physics.Raycast(ray, out hit))
                 {
                     currWaypoint = hit.point;
-                    currWaypoint.y = 0.6f;
-                    moveToProj.transform.position = currWaypoint;
+                    Vector3 modifiedYcurrWaypoint = currWaypoint;
+                    modifiedYcurrWaypoint.y = 2f;
+                    moveToProj.transform.position = modifiedYcurrWaypoint;
+                    
                 }
+                _playerAnimator.SetBool("Moving", true);
             }
             else if (Input.GetMouseButtonDown(1))
             {
                 duckCallProjector.GetComponent<Projector>().enabled = true;
                 duckCallProjector.GetComponent<Animator>().Play("DuckCallProjectorAnim");
+                _playerAnimator.SetTrigger("DuckCall");
+                gameMgr.ResetDucklingFormation();
             }
 
             if (currWaypoint != Vector3.zero)
@@ -59,7 +69,7 @@ public class PlayerController : MonoBehaviour
         else if (controllerType == ControllerType.Gamepad)
         {
             var direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            gamepadCharController.Move(direction * Time.deltaTime);
+            gamepadCharController.Move(direction * GameManager.Player.pSpeed * Time.deltaTime);
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, direction, 8f * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDir);
@@ -69,11 +79,18 @@ public class PlayerController : MonoBehaviour
 
     void MoveToWP()
     {
-        transform.position = Vector3.MoveTowards(transform.position, currWaypoint, 5f * Time.deltaTime);
-        //transform.LookAt(currWaypoint);
-        Vector3 temp = transform.position;
-        temp.y = 0.696f;
-        transform.position = temp;
+        if (Vector3.Distance(transform.position, currWaypoint) < 0.5f)
+        {
+            _playerAnimator.SetBool("Moving", false);
+            return;
+        }
+        transform.position = Vector3.MoveTowards(transform.position, currWaypoint, GameManager.Player.pSpeed * Time.deltaTime);
+
+        Vector3 target = currWaypoint - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, target, 8f * Time.deltaTime, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
+
+        
     }
 
 

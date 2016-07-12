@@ -3,8 +3,7 @@ using System.Collections;
 
 public class PlayerData {
 
-    public int ducklingCnt;
-    public float pSpeed;
+    public float pSpeed = .9f;
     public GameObject pGO;
    
 }

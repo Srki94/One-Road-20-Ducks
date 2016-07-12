@@ -3,7 +3,6 @@ using UnityEditor;
 
 namespace Game.CrossTheRoad
 {
-
     [CustomEditor(typeof(MatAnimHelper))]
     public class MatAnimHelperEditorExtension : Editor
     {

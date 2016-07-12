@@ -20,8 +20,6 @@ public class RoadSegment : MonoBehaviour {
 
     public void DestroySegment()
     {
-        // shader woodo shit
-        // remove all cars tied to this road and this road /// Or just cache them in background :)
         gameObject.SetActive(false);
         
         foreach(var go in carsOnThisRoad)

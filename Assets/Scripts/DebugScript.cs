@@ -30,6 +30,6 @@ public class DebugScript : MonoBehaviour {
         GameObject thisGo = (GameObject)Instantiate(emptyPrefab, Vector3.zero, Quaternion.identity);
         thisGo.name = "_DEBUG_TRANSFORM_PARENT_TEST";
         thisGo.transform.parent = playerPosition;
-         
     }
+
 }

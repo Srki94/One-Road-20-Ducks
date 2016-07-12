@@ -118,13 +118,5 @@ public class GameManager : MonoBehaviour
         rs.carsOnThisRoad[rs.carsOnThisRoad.Count - 1].GetComponent<Vehicle>().moving = true;
 
     }
-
-
-    void Update()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SpawnRoadSegment();
-        }
-    }
+ 
 }

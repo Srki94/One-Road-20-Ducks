@@ -36,18 +36,23 @@ public class GameManager : MonoBehaviour
 
         Player.pGO = GameObject.FindWithTag("Player");
 
-        for (var i = 0; i <=5; i++)
+        for (var i = 0; i <= 5; i++)
         {
-            SpawnRoadSegment(true);
+            SpawnRoadSegment(rnd: true, initialSpawn: true);
         }
+
+        SpawnDuckling(3);
     }
 
-    void SpawnDuckling()
+    void SpawnDuckling(int amount = 1)
     {
-        GameObject thisDuckling = Instantiate(ducklingPrefab, Player.pGO.transform.position + ducklingSpawnOffset, Quaternion.identity) as GameObject;
-        thisDuckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(thisDuckling);
-        ducklingsCnt++;
-        thisDuckling.GetComponent<DucklingAI>().moving = true;
+        for (var cnt = 0; cnt <= amount; cnt++)
+        {
+            GameObject thisDuckling = Instantiate(ducklingPrefab, Player.pGO.transform.position + ducklingSpawnOffset, Quaternion.identity) as GameObject;
+            thisDuckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(thisDuckling);
+            ducklingsCnt++;
+            thisDuckling.GetComponent<DucklingAI>().moving = true;
+        }
     }
 
     public void ResetDucklingFormation()
@@ -55,13 +60,13 @@ public class GameManager : MonoBehaviour
         DucklingLandingPort lp = Player.pGO.GetComponent<DucklingLandingPort>();
         lp.RePositionLandingZones(ducklingsCnt);
 
-       // foreach (var duckling in GameObject.FindGameObjectsWithTag("DucklingAI"))
-       // {
-       //     duckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(duckling);
-       // }
+        // foreach (var duckling in GameObject.FindGameObjectsWithTag("DucklingAI"))
+        // {
+        //     duckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(duckling);
+        // }
     }
 
-    public void SpawnRoadSegment(bool rnd = false, int amount = 1)
+    public void SpawnRoadSegment(bool rnd = false, int amount = 1, bool initialSpawn = false)
     {
         Vector3 spawnPos = new Vector3(10, 0, 1);
         int index = 0;
@@ -82,7 +87,10 @@ public class GameManager : MonoBehaviour
 
         SpawnCars(thisRoad);
         roadSegmentsInScene.Add(thisRoad);
-        SpawnDuckling();
+        if (!initialSpawn)
+        {
+            SpawnDuckling(2);
+        }
     }
 
     void SpawnCars(GameObject road, bool rnd = false)
@@ -118,5 +126,5 @@ public class GameManager : MonoBehaviour
         rs.carsOnThisRoad[rs.carsOnThisRoad.Count - 1].GetComponent<Vehicle>().moving = true;
 
     }
- 
+
 }

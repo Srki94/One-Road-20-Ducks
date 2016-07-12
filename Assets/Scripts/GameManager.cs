@@ -53,12 +53,12 @@ public class GameManager : MonoBehaviour
     public void ResetDucklingFormation()
     {
         DucklingLandingPort lp = Player.pGO.GetComponent<DucklingLandingPort>();
-        lp.ReSpawnLandingZones(ducklingsCnt);
+        lp.RePositionLandingZones(ducklingsCnt);
 
-        foreach (var duckling in GameObject.FindGameObjectsWithTag("DucklingAI"))
-        {
-            duckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(duckling);
-        }
+       // foreach (var duckling in GameObject.FindGameObjectsWithTag("DucklingAI"))
+       // {
+       //     duckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(duckling);
+       // }
     }
 
     public void SpawnRoadSegment(bool rnd = false, int amount = 1)

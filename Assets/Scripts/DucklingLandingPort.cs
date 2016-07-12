@@ -76,6 +76,7 @@ public class DucklingLandingPort : MonoBehaviour {
 
             var pos = new Vector3(x, 0, z) +  (pGoPos.position- new Vector3(0,0, zOffset));
 
+            
            GameObject thisGo =  (GameObject)Instantiate(emptyGOprefab, pos, Quaternion.identity);
             thisGo.name = "GeneratedLZ";
             thisGo.transform.parent = pGoPos;
@@ -87,17 +88,58 @@ public class DucklingLandingPort : MonoBehaviour {
             }
         }
     }
-     
-    public void ReSpawnLandingZones(int amount)
+    
+    /// <summary>
+    /// Resets all landing zones reusing existing ones
+    /// </summary>
+    /// <param name="amount">Number of ducklings that exist in scene</param>
+    public void RePositionLandingZones(int amount)
     {
-        spawnOffset = 0.0f;
-        landingAreas.RemoveRange(4, landingAreas.Count - 4);
+        #region oldRef
+        // Todo : Remove once obsolete
+        // spawnOffset = 0.0f;
+        // landingAreas.RemoveRange(4, landingAreas.Count - 4);
+        //
+        // for (var i = 0; i <= amount/5; i++)
+        // {
+        //     spawnOffset += 0.5f;
+        //     SpawnLandingZones(GameManager.Player.pGO.transform, 5, spawnOffset);
+        // }
+        #endregion
 
-        for (var i = 0; i <= amount/5; i++)
+        float zoffset = 0.0f; // Base offset between each semicircle
+
+        int numPoints = 5;    // Amount of spots to spawn in each cycle
+        int lzCounter = 4;    // Counter for landingAreas objects, skip 4 base ones
+
+        for (var i = 0; i<= amount/5; i++)
         {
-            spawnOffset += 0.5f;
-            SpawnLandingZones(GameManager.Player.pGO.transform, 5, spawnOffset);
+            zoffset += 0.5f;
+
+            for (var pointNum = 0; pointNum < numPoints; pointNum++)
+            {
+                if (lzCounter >= landingAreas.Count - 1)
+                {
+                    return;
+                }
+
+                var cnt = (pointNum * 1.0) / numPoints;
+                var angle = cnt * Mathf.PI + 90;
+
+                var x = Mathf.Sin((float)angle) * .5f;
+                var z = Mathf.Cos((float)angle) * 1f;
+
+                var pos = new Vector3(x, 0, z) + (GameManager.Player.pGO.transform.position - new Vector3(0, 0, zoffset));
+                landingAreas[lzCounter].landingZone.position = pos;
+                if (lzCounter < landingAreas.Count - 1)
+                {
+                    lzCounter++;
+                }
+                
+            }
         }
+       
+
     }
 
 }

@@ -10,6 +10,11 @@ public class LandingArea
         landingZone = pos;
     }
     
+    public LandingArea(GameObject _lzGo)
+    {
+        landingZone = _lzGo.transform;
+        lzGo = _lzGo;
+    }
     /// <summary>
     /// Creates new landing zone and associates duckling to it
     /// </summary>
@@ -25,5 +30,6 @@ public class LandingArea
     public Transform landingZone;
     public List<GameObject> ducklingsInZone = new List<GameObject>();
     public int landingAreaID;
+    public GameObject lzGo;
 
 }

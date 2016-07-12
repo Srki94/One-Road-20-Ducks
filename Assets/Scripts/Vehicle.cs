@@ -63,6 +63,18 @@ public class Vehicle : MonoBehaviour
             if (activeWPIndex == localLane.Count - 1)
             {
                 moving = false;
+                // Move vehicle to another lane // TODO : Add logic to randomize next spawn on this road ?
+                if (activeLane == Lane.Left)
+                {
+                    activeLane = Lane.Right;
+                }
+                else
+                {
+                    activeLane = Lane.Left;
+                }
+                activeWPIndex = 0;
+                PostInitStuff();
+                moving = true;
             }
             else
             {

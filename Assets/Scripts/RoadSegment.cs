@@ -9,10 +9,12 @@ public class RoadSegment : MonoBehaviour {
     public List<GameObject> carsOnThisRoad = new List<GameObject>();
 
     Renderer thisGoRenderer;
+    GameManager gMgr;
 
     void Start()
     {
         thisGoRenderer = GetComponent<Renderer>();
+        gMgr = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
     }
      
 
@@ -32,8 +34,10 @@ public class RoadSegment : MonoBehaviour {
 
     void Update()
     {
-         if (!thisGoRenderer.IsVisibleFrom(Camera.main))
+        if (transform.position.z < GameManager.Player.pGO.transform.position.z &&
+            !thisGoRenderer.IsVisibleFrom(Camera.main))
         {
+            gMgr.SpawnRoadSegment();
             DestroySegment();
         }
     }

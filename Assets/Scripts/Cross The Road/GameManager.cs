@@ -16,6 +16,7 @@ namespace Game.CrossTheRoad
         public List<GameObject> roadSegmentPrefabs;
         public List<GameObject> vehiclePrefabs;
         public GameObject ducklingPrefab;
+        public CanvasManager userInterface;
 
         List<GameObject> roadSegmentsInScene = new List<GameObject>();      //Note : Caching - As long as player sees road on scene keep it alive ? 
 
@@ -52,6 +53,7 @@ namespace Game.CrossTheRoad
                 GameObject thisDuckling = Instantiate(ducklingPrefab, Player.pGO.transform.position + ducklingSpawnOffset, Quaternion.identity) as GameObject;
                 thisDuckling.GetComponent<DucklingAI>().landingDestination = Player.pGO.GetComponent<DucklingLandingPort>().GetLandingZone(thisDuckling);
                 ducklingsCnt++;
+                userInterface.SetDucklingCount(ducklingsCnt);
                 thisDuckling.GetComponent<DucklingAI>().moving = true;
             }
         }
